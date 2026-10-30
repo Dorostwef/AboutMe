@@ -50,14 +50,22 @@ from backend.services.profile_loader import get_profile_json_for_prompt
 
 logger = logging.getLogger(__name__)
 
-# ── OpenAI client (shared singleton, reused across requests) ──────────────────
+# ── OpenAI / OpenRouter client (shared singleton, reused across requests) ────
 _client: AsyncOpenAI | None = None
 
 def _get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
         from backend.config import OPENAI_API_KEY, OPENAI_BASE_URL
-        _client = AsyncOpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
+        headers = {
+            "HTTP-Referer": "https://aboutdorost.darkube.ir",
+            "X-Title": "Joe King AI Portfolio",
+        }
+        _client = AsyncOpenAI(
+            api_key=OPENAI_API_KEY,
+            base_url=OPENAI_BASE_URL,
+            default_headers=headers,
+        )
     return _client
 
 # ── Project keyword map for GitHub trigger detection ──────────────────────────
@@ -263,13 +271,25 @@ async def _call_llm(
     messages.append({"role": "user", "content": question})
 
     client = _get_client()
-    response = await client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=messages,        # type: ignore[arg-type]
-        response_format={"type": "json_object"},
-        temperature=0.0,          # deterministic — no creativity, pure grounding
-        max_tokens=2048,
-    )
+    call_kwargs: dict[str, Any] = {
+        "model": OPENAI_MODEL,
+        "messages": messages,
+        "temperature": 0.0,
+        "max_tokens": 2048,
+    }
+
+    try:
+        response = await client.chat.completions.create(
+            response_format={"type": "json_object"},
+            **call_kwargs,
+        )
+    except Exception as exc:
+        err_msg = str(exc).lower()
+        # If model does not support response_format param, retry without it
+        if "response_format" in err_msg or "schema" in err_msg:
+            response = await client.chat.completions.create(**call_kwargs)
+        else:
+            raise
 
     raw_text = (response.choices[0].message.content or "").strip()
     

@@ -24,12 +24,30 @@ for _proxy_var in ("all_proxy", "ALL_PROXY", "http_proxy", "HTTP_PROXY", "https_
 
 
 # ── LLM ───────────────────────────────────────────────────────────────────────
-# Supports either OPENAI_API_KEY or GROQ_API_KEY
-OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY") or os.getenv("GROQ_API_KEY", "")
-OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL") or (
-    "https://api.groq.com/openai/v1" if os.getenv("GROQ_API_KEY") else "https://api.openai.com/v1"
+# Supports OPENROUTER_API_KEY, OPENAI_API_KEY, or GROQ_API_KEY
+OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
+OPENAI_API_KEY: str = (
+    OPENROUTER_API_KEY
+    or os.getenv("OPENAI_API_KEY", "")
+    or os.getenv("GROQ_API_KEY", "")
 )
-OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "openai/gpt-oss-20b")
+
+# Determine default Base URL
+_default_base_url = "https://api.openai.com/v1"
+if OPENROUTER_API_KEY or OPENAI_API_KEY.startswith("sk-or-"):
+    _default_base_url = "https://openrouter.ai/api/v1"
+elif os.getenv("GROQ_API_KEY") or OPENAI_API_KEY.startswith("gsk_"):
+    _default_base_url = "https://api.groq.com/openai/v1"
+
+OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL") or _default_base_url
+
+# Determine default Model
+if "openrouter.ai" in OPENAI_BASE_URL:
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "meta-llama/llama-3.3-70b-instruct")
+elif "groq.com" in OPENAI_BASE_URL:
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "openai/gpt-oss-20b")
+else:
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # ── GitHub ─────────────────────────────────────────────────────────────────────
 GITHUB_TOKEN: str | None = os.getenv("GITHUB_TOKEN")
