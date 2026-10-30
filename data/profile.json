@@ -1,0 +1,199 @@
+{
+  "$schema": "./profile.schema.json",
+  "meta": {
+    "version": "1.0.0",
+    "last_updated": "2026-10-30",
+    "owner": "Joe King",
+    "visibility": "public"
+  },
+  "guardrails_and_limits": {
+    "visibility": "public",
+    "authority_boundaries": [
+      "Cannot book meetings or schedule calendar appointments",
+      "Cannot send emails or dispatch messages on behalf of Joe King",
+      "Cannot make official statements or speak on behalf of Sharif University of Technology",
+      "Cannot represent or commit to contractual agreements on behalf of Joe King"
+    ],
+    "restricted_topics": [
+      "Phone number (strictly private, will not be shared under any circumstances)"
+    ],
+    "behavioral_rules": [
+      "Never invent, assume, or hallucinate facts not present in this record or the external API",
+      "If a project field (such as deployment_date) is null or missing, state that it is not recorded",
+      "If a visitor question is ambiguous (e.g., 'tell me about my project' without specifying which one), ask exactly one clarifying question before answering",
+      "Only take actions from the allowed capability list: answer_from_record, call_external_api, refuse_fact, ask_clarification, out_of_scope"
+    ]
+  },
+  "personal_info": {
+    "name": "Joe King",
+    "role": "Computer Engineering Student",
+    "institution": "Sharif University of Technology",
+    "location": "Tehran, Iran",
+    "email": "joe.king@sharif.edu",
+    "github_username": "Dorostwef",
+    "phone_number": {
+      "value": "+98-912-000-0000",
+      "visibility": "restricted",
+      "status": "refuse_to_share"
+    },
+    "visibility": "public"
+  },
+  "courses": [
+    {
+      "id": "course_ai_native",
+      "code": "CE4051",
+      "title": "AI-Native Systems Design",
+      "term": "Fall 2026",
+      "topics": [
+        "LLM Agent Architectures",
+        "Deterministic Grounding and Guardrails",
+        "Explainability and Trace Generation",
+        "Autonomous Tool Calling"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "course_compiler",
+      "code": "CE4042",
+      "title": "Compiler Design",
+      "term": "Spring 2026",
+      "topics": [
+        "Lexical and Syntax Analysis",
+        "LR(1) and LALR Parsing",
+        "Intermediate Representation (SSA Form)",
+        "Register Allocation by Graph Coloring",
+        "Instruction Selection and Peep-hole Optimization"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "course_dist_sys",
+      "code": "CE4033",
+      "title": "Distributed Operating Systems",
+      "term": "Fall 2025",
+      "topics": [
+        "Consensus Protocols (Raft, Paxos)",
+        "Vector Clocks and Causality",
+        "RPC Frameworks and Serialization",
+        "Byzantine Fault Tolerance and Partition Healing"
+      ],
+      "visibility": "public"
+    }
+  ],
+  "projects": [
+    {
+      "id": "compiler",
+      "name": "MiniLang Optimizing Compiler",
+      "summary": "An optimizing compiler for a statically-typed toy language, targeting x86-64 assembly.",
+      "tech_stack": ["Rust", "LLVM", "x86-64 Assembly"],
+      "github_repo": "Dorostwef/compiler-opt",
+      "key_features": [
+        "LALR(1) parser with detailed syntax error recovery",
+        "SSA-based intermediate representation with constant folding and dead code elimination",
+        "Chaitin-style graph coloring register allocator"
+      ],
+      "deployment_date": null,
+      "team_size": null,
+      "visibility": "public"
+    },
+    {
+      "id": "raft_kv",
+      "name": "RaftKV Distributed Key-Value Store",
+      "summary": "A fault-tolerant, linearizable distributed key-value store built on the Raft consensus algorithm.",
+      "tech_stack": ["Go", "gRPC", "Protobuf", "Docker"],
+      "github_repo": "Dorostwef/raft-kv",
+      "key_features": [
+        "Leader election, randomized heartbeat timers, and dynamic membership reconfiguration",
+        "Log compaction with asynchronous memory snapshotting to disk",
+        "Linearizable read-index lease queries avoiding stale reads"
+      ],
+      "deployment_date": null,
+      "team_size": 2,
+      "visibility": "public"
+    },
+    {
+      "id": "neural_search",
+      "name": "Neural Semantic Code Search Engine",
+      "summary": "A semantic code search engine that maps natural language queries to AST embeddings for high-accuracy code retrieval.",
+      "tech_stack": ["Python", "PyTorch", "Tree-sitter", "FAISS", "FastAPI"],
+      "github_repo": "Dorostwef/neural-search",
+      "key_features": [
+        "Polyglot AST parsing for Rust, Go, and Python using Tree-sitter",
+        "Contrastive bi-encoder embeddings trained on code-docstring pairs",
+        "Sub-15ms vector retrieval using quantized FAISS indexes"
+      ],
+      "deployment_date": "2026-04-12",
+      "team_size": 1,
+      "visibility": "public"
+    }
+  ],
+  "reading_recommendations_catalog": [
+    {
+      "domain": "Compiler Construction & Systems",
+      "tied_courses": ["CE4042"],
+      "tied_projects": ["compiler"],
+      "recommended_books": [
+        {
+          "title": "Engineering a Compiler",
+          "authors": ["Keith D. Cooper", "Linda Torczon"],
+          "why_relevant": "Deep dive into SSA form, intermediate representations, and register allocation matching the MiniLang project."
+        },
+        {
+          "title": "Crafting Interpreters",
+          "authors": ["Robert Nystrom"],
+          "why_relevant": "Covers practical bytecode VM and tree-walk interpreter architecture."
+        }
+      ],
+      "visibility": "public"
+    },
+    {
+      "domain": "Distributed Systems & Consensus",
+      "tied_courses": ["CE4033"],
+      "tied_projects": ["raft_kv"],
+      "recommended_books": [
+        {
+          "title": "Designing Data-Intensive Applications",
+          "authors": ["Martin Kleppmann"],
+          "why_relevant": "The benchmark reference for consensus, partition tolerance, and replication strategies used in RaftKV."
+        },
+        {
+          "title": "Database Internals: A Deep Dive into Distributed Systems",
+          "authors": ["Alex Petrov"],
+          "why_relevant": "Explains storage engines, B-trees, LSM-trees, and distributed transaction protocols."
+        }
+      ],
+      "visibility": "public"
+    },
+    {
+      "domain": "AI Systems & LLM Architecture",
+      "tied_courses": ["CE4051"],
+      "tied_projects": ["neural_search"],
+      "recommended_books": [
+        {
+          "title": "Designing Machine Learning Systems",
+          "authors": ["Chip Huyen"],
+          "why_relevant": "Essential practices for building production-ready vector retrieval and model evaluation pipelines."
+        }
+      ],
+      "visibility": "public"
+    }
+  ],
+  "job_fit_profile": {
+    "target_roles": [
+      "Backend Software Engineer",
+      "Systems Software Engineer",
+      "AI Systems Engineer"
+    ],
+    "core_competencies": [
+      "Distributed consensus and fault-tolerant state machine replication (Go, Raft)",
+      "Low-level systems programming and compilers (Rust, x86-64, LLVM)",
+      "Vector search, AST parsing, and AI model orchestration (Python, PyTorch, FAISS)"
+    ],
+    "work_preferences": {
+      "environment": "Challenging infrastructure, systems engineering, or AI-native tooling",
+      "modes": ["Remote", "Hybrid"],
+      "visibility": "public"
+    },
+    "visibility": "public"
+  }
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joe King — AI-Native Portfolio</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════ HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-identity">
+        <div class="avatar">JK</div>
+        <div>
+          <h1 class="header-name">Joe King</h1>
+          <p class="header-role">Computer Engineering Student · Sharif University of Technology</p>
+        </div>
+      </div>
+      <a class="github-link" href="https://github.com/Dorostwef" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/>
+        </svg>
+        Dorostwef
+      </a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════ GUARDRAILS -->
+  <section class="guardrails-section">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="shield-icon">🛡️</span>
+        AI System Boundaries &amp; Guardrails
+      </h2>
+      <p class="guardrails-intro">
+        This assistant is <strong>strictly grounded</strong> — it only answers using Joe's official profile record
+        or live GitHub data. It cannot hallucinate, guess, or use outside knowledge.
+      </p>
+      <div class="guardrails-grid">
+        <div class="guardrail-card allowed">
+          <h3>✅ Allowed Capabilities</h3>
+          <ul>
+            <li><code>answer_from_record</code> — Answer from profile.json</li>
+            <li><code>call_external_api</code> — Fetch live GitHub stats</li>
+            <li><code>ask_clarification</code> — Ask one follow-up when ambiguous</li>
+            <li><code>refuse_fact</code> — Refuse restricted topics</li>
+            <li><code>out_of_scope</code> — Decline unrelated questions</li>
+          </ul>
+        </div>
+        <div class="guardrail-card restricted">
+          <h3>🚫 Authority Limits</h3>
+          <ul>
+            <li>Cannot book meetings or schedule appointments</li>
+            <li>Cannot send emails on Joe's behalf</li>
+            <li>Cannot make statements for Sharif University of Technology</li>
+            <li>Cannot commit to contractual agreements</li>
+          </ul>
+        </div>
+        <div class="guardrail-card private">
+          <h3>🔒 Refused Topics</h3>
+          <ul>
+            <li>Phone number (strictly private)</li>
+            <li>Any field not present in the official profile record</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ PROFILE -->
+  <section class="profile-section">
+    <div class="container">
+      <div class="profile-grid">
+
+        <!-- Courses -->
+        <div class="profile-card" id="courses-card">
+          <h3 class="card-title">📚 Courses</h3>
+          <div id="courses-list" class="loading-shimmer">Loading…</div>
+        </div>
+
+        <!-- Projects -->
+        <div class="profile-card" id="projects-card">
+          <h3 class="card-title">🛠️ Projects</h3>
+          <div id="projects-list" class="loading-shimmer">Loading…</div>
+        </div>
+
+        <!-- Job Fit -->
+        <div class="profile-card" id="jobfit-card">
+          <h3 class="card-title">💼 Job Fit Profile</h3>
+          <div id="jobfit-info" class="loading-shimmer">Loading…</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════ CHAT -->
+  <section class="chat-section">
+    <div class="container">
+      <h2 class="section-title">🤖 Ask Joe's AI Assistant</h2>
+
+      <!-- Quick-prompt chips -->
+      <div class="chips-row">
+        <button class="chip chip-project"  data-q="Summarise the MiniLang Optimizing Compiler project.">🔧 MiniLang Compiler</button>
+        <button class="chip chip-project"  data-q="Tell me about the RaftKV Distributed Key-Value Store.">⚙️ RaftKV Store</button>
+        <button class="chip chip-project"  data-q="Describe the Neural Semantic Code Search Engine project.">🧠 Neural Search</button>
+        <button class="chip chip-reading"  data-q="What books do you suggest I read based on your courses and projects?">📖 Reading Suggestions</button>
+        <button class="chip chip-jobfit"   data-q="We are looking for a Backend Systems Engineer to build distributed consensus services in Go. Do you fit this job?">💼 Job Fit Evaluation</button>
+        <button class="chip chip-github"   data-q="What is the latest commit on the Dedit repository on GitHub?">🐙 GitHub Live (Dedit)</button>
+        <button class="chip chip-refusal"  data-q="What is Joe King's phone number?">🔒 Refusal Demo</button>
+        <button class="chip chip-clarify"  data-q="Tell me about your project.">❓ Clarification Demo</button>
+      </div>
+
+      <!-- Chat window -->
+      <div id="chat-window" class="chat-window" aria-live="polite"></div>
+
+      <!-- Input bar -->
+      <div class="chat-input-bar">
+        <input
+          id="chat-input"
+          type="text"
+          class="chat-input"
+          placeholder="Ask anything about Joe King…"
+          autocomplete="off"
+          maxlength="2000"
+        />
+        <button id="send-btn" class="send-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+          Send
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ GROUNDING AUDITOR MODAL -->
+  <div id="auditor-overlay" class="auditor-overlay hidden" role="dialog" aria-modal="true" aria-label="Grounding Auditor">
+    <div class="auditor-panel">
+      <div class="auditor-header">
+        <span>🔍 Grounding Auditor &amp; Explainability Trace</span>
+        <button id="auditor-close" class="auditor-close" aria-label="Close">✕</button>
+      </div>
+
+      <div class="auditor-body">
+        <!-- Intent / Capability badges -->
+        <div class="trace-badges">
+          <span class="badge badge-intent" id="trace-intent">intent: —</span>
+          <span class="badge badge-capability" id="trace-capability">capability: —</span>
+          <span class="badge badge-api" id="trace-api" style="display:none"></span>
+        </div>
+
+        <!-- Fields read -->
+        <div class="trace-block">
+          <h4>Fields Read from profile.json</h4>
+          <ul id="trace-fields" class="trace-list"></ul>
+        </div>
+
+        <!-- Missing facts -->
+        <div class="trace-block" id="missing-block" style="display:none">
+          <h4>⚠️ Missing Facts Noted</h4>
+          <ul id="trace-missing" class="trace-list trace-list--warning"></ul>
+        </div>
+
+        <!-- Audit spans -->
+        <div class="trace-block">
+          <h4>Sentence-Level Grounding Spans</h4>
+          <div id="trace-spans" class="spans-container"></div>
+        </div>
+
+        <!-- Highlighted answer replay -->
+        <div class="trace-block">
+          <h4>Answer with Source Highlights</h4>
+          <div id="trace-highlighted-answer" class="highlighted-answer"></div>
+        </div>
+
+        <!-- Copy button -->
+        <button id="copy-trace-btn" class="copy-btn">📋 Copy Formatted Trace for Report</button>
+        <span id="copy-confirm" class="copy-confirm hidden">✓ Copied!</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>AI-Native Portfolio · Joe King · Sharif University of Technology · CE4051 Assignment</p>
+      <p class="footer-note">All answers strictly grounded in <code>profile.json</code> or <code>GitHub REST API v3</code>. Zero hallucination guarantee.</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

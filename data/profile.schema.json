@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UserProfileRecord",
+  "description": "Schema definition for the AI-native personal profile record with explicit visibility and guardrails.",
+  "type": "object",
+  "required": [
+    "meta",
+    "guardrails_and_limits",
+    "personal_info",
+    "courses",
+    "projects",
+    "reading_recommendations_catalog",
+    "job_fit_profile"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "last_updated", "owner", "visibility"],
+      "properties": {
+        "version": { "type": "string" },
+        "last_updated": { "type": "string" },
+        "owner": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "restricted"] }
+      }
+    },
+    "guardrails_and_limits": {
+      "type": "object",
+      "required": [
+        "visibility",
+        "authority_boundaries",
+        "restricted_topics",
+        "behavioral_rules"
+      ],
+      "properties": {
+        "visibility": { "type": "string", "enum": ["public", "restricted"] },
+        "authority_boundaries": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "restricted_topics": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "behavioral_rules": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "personal_info": {
+      "type": "object",
+      "required": [
+        "name",
+        "role",
+        "institution",
+        "location",
+        "email",
+        "github_username",
+        "phone_number",
+        "visibility"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "institution": { "type": "string" },
+        "location": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "github_username": { "type": "string" },
+        "phone_number": {
+          "type": "object",
+          "required": ["value", "visibility", "status"],
+          "properties": {
+            "value": { "type": "string" },
+            "visibility": { "type": "string", "enum": ["public", "restricted"] },
+            "status": { "type": "string" }
+          }
+        },
+        "visibility": { "type": "string", "enum": ["public", "restricted"] }
+      }
+    },
+    "courses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "code", "title", "term", "topics", "visibility"],
+        "properties": {
+          "id": { "type": "string" },
+          "code": { "type": "string" },
+          "title": { "type": "string" },
+          "term": { "type": "string" },
+          "topics": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "visibility": { "type": "string", "enum": ["public", "restricted"] }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "summary",
+          "tech_stack",
+          "github_repo",
+          "key_features",
+          "visibility"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "summary": { "type": "string" },
+          "tech_stack": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "github_repo": { "type": "string" },
+          "key_features": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "deployment_date": { "type": ["string", "null"] },
+          "team_size": { "type": ["integer", "null"] },
+          "visibility": { "type": "string", "enum": ["public", "restricted"] }
+        }
+      }
+    },
+    "reading_recommendations_catalog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["domain", "tied_courses", "tied_projects", "recommended_books", "visibility"],
+        "properties": {
+          "domain": { "type": "string" },
+          "tied_courses": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "tied_projects": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "recommended_books": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["title", "authors", "why_relevant"],
+              "properties": {
+                "title": { "type": "string" },
+                "authors": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "why_relevant": { "type": "string" }
+              }
+            }
+          },
+          "visibility": { "type": "string", "enum": ["public", "restricted"] }
+        }
+      }
+    },
+    "job_fit_profile": {
+      "type": "object",
+      "required": ["target_roles", "core_competencies", "work_preferences", "visibility"],
+      "properties": {
+        "target_roles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "core_competencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "work_preferences": {
+          "type": "object",
+          "required": ["environment", "modes", "visibility"],
+          "properties": {
+            "environment": { "type": "string" },
+            "modes": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "visibility": { "type": "string", "enum": ["public", "restricted"] }
+          }
+        },
+        "visibility": { "type": "string", "enum": ["public", "restricted"] }
+      }
+    }
+  }
+}

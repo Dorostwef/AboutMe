@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Python virtual env
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Secrets — never bake API keys into the image
+.env
+
+# Dev-only docs
+docs/
+
+# Editor / OS artifacts
+.DS_Store
+*.swp
+*.idea
+.vscode/
