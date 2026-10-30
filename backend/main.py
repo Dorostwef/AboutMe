@@ -29,7 +29,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from backend.config import HOST, PORT
+from backend.config import HOST, OPENAI_BASE_URL, OPENAI_MODEL, PORT
 from backend.schemas import ChatRequest, ChatResponse, PublicProfile
 from backend.services.llm_engine import generate_response
 from backend.services.profile_loader import get_public_profile_dict, reload_profile
@@ -59,6 +59,12 @@ async def lifespan(app: FastAPI):
         reload_profile()           # validate profile.json is readable
         get_public_profile_dict()  # warm cache
         logger.info("Profile loaded successfully.")
+        provider_name = (
+            "OpenRouter" if "openrouter.ai" in OPENAI_BASE_URL
+            else ("Groq" if "groq.com" in OPENAI_BASE_URL else "OpenAI")
+        )
+        logger.info("Active LLM Provider: %s (%s)", provider_name, OPENAI_BASE_URL)
+        logger.info("Active LLM Model: %s", OPENAI_MODEL)
     except FileNotFoundError as exc:
         logger.error("FATAL: %s", exc)
         raise SystemExit(1) from exc
@@ -113,9 +119,19 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
     summary="Liveness probe",
     tags=["Infra"],
 )
-async def health_check() -> dict[str, str]:
-    """Returns 200 OK when the server is running."""
-    return {"status": "healthy", "service": "AboutMe AI Backend"}
+async def health_check() -> dict[str, Any]:
+    """Returns 200 OK and active provider info when the server is running."""
+    provider_name = (
+        "OpenRouter" if "openrouter.ai" in OPENAI_BASE_URL
+        else ("Groq" if "groq.com" in OPENAI_BASE_URL else "OpenAI")
+    )
+    return {
+        "status": "healthy",
+        "service": "AboutMe AI Backend",
+        "provider": provider_name,
+        "base_url": OPENAI_BASE_URL,
+        "model": OPENAI_MODEL,
+    }
 
 
 @app.get(
