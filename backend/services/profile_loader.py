@@ -127,6 +127,7 @@ def get_public_profile_dict() -> dict[str, Any]:
     personal = p.get("personal_info", {})
     return {
         "name":                          personal.get("name", ""),
+        "student_number":                personal.get("student_number", ""),
         "role":                          personal.get("role", ""),
         "institution":                   personal.get("institution", ""),
         "location":                      personal.get("location", ""),

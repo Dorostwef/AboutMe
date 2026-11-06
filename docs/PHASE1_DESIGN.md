@@ -3,7 +3,8 @@
 ## 1. Personal Profile Record & Schema
 - **Data File**: `data/profile.json`
 - **Schema File**: `data/profile.schema.json`
-- **Owner**: Joe King
+- **Owner**: Amirreza Dorosti
+- **Student Number**: `403110466`
 - **GitHub Username**: `Dorostwef`
 - **Visibility Rules**:
   - All public profile fields marked `"visibility": "public"`.

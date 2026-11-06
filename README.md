@@ -1,4 +1,4 @@
-# Joe King — AI-Native Personal Page
+# Amirreza Dorosti — AI-Native Personal Page
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -6,18 +6,20 @@
 [![Sharif University](https://img.shields.io/badge/Sharif%20University-CE4051-blue)](https://sharif.edu)
 
 An AI-native personal portfolio and query engine designed around **strict deterministic grounding, zero hallucination, guardrail boundaries, and explainability**. Built for the **AI-Native Systems Design (CE4051)** assignment at **Sharif University of Technology**.
+- **Student Name:** Amirreza Dorosti
+- **Student Number:** 403110466
 
 ---
 
 ## 🌟 Key Architecture & Capabilities
 
 1. **Zero Hallucination & Strict Grounding:**
-   The AI assistant knows **nothing** about Joe King other than what is explicitly declared in [`data/profile.json`](./data/profile.json) or retrieved from the live GitHub REST API. If a fact is unlisted (e.g. `deployment_date` or `team_size` in certain projects), it refuses to estimate or guess.
+   The AI assistant knows **nothing** about Amirreza Dorosti other than what is explicitly declared in [`data/profile.json`](./data/profile.json) or retrieved from the live GitHub REST API. If a fact is unlisted (e.g. `deployment_date` or `team_size` in certain projects), it refuses to estimate or guess.
 
 2. **Core Intent Handling:**
    - **Project Summaries:** Provides verified overviews of projects (`MiniLang Compiler`, `RaftKV Store`, `Neural Code Search`).
    - **Curated Reading Suggestions:** Recommends technical literature tied to completed courses and active projects.
-   - **Job Fit Evaluation:** Objectively compares visitor-described job roles against Joe King's recorded core competencies.
+   - **Job Fit Evaluation:** Objectively compares visitor-described job roles against Amirreza Dorosti's recorded core competencies.
 
 3. **Deterministic Guardrails & Authority Limits:**
    - **Private Data Protection:** Phone number requests are strictly intercepted and refused.
@@ -52,7 +54,7 @@ AboutMe/
 │       ├── github_service.py     # Async GitHub REST API v3 client
 │       └── llm_engine.py         # Grounded prompt builder, LLM caller & trace parser
 ├── data/
-│   ├── profile.json              # Joe King's authoritative profile record
+│   ├── profile.json              # Amirreza Dorosti's authoritative profile record
 │   └── profile.schema.json       # Formal JSON Schema (Draft 2020-12)
 ├── frontend/
 │   ├── index.html                # Responsive UI with Guardrails banner & Chat
@@ -128,7 +130,7 @@ curl -s -X POST http://localhost:8000/api/chat \
 ```bash
 curl -s -X POST http://localhost:8000/api/chat \
   -H "Content-Type: application/json" \
-  -d '{"question":"What is Joe King'\''s phone number?"}' | python3 -m json.tool
+  -d '{"question":"What is Amirreza Dorosti'\''s phone number?"}' | python3 -m json.tool
 ```
 
 ### Clarifying Follow-Up
@@ -147,7 +149,7 @@ This repository is pre-configured for automated deployment on **Hamravesh Darkub
 1. Log in to [console.hamravesh.com](https://console.hamravesh.com).
 2. Create a new app under **Darkube** and select this GitHub repository (`Dorostwef/AboutMe`).
 3. Set the Environment Variables:
-   - `GROQ_API_KEY`
+   - `OPENROUTER_API_KEY` (or `GROQ_API_KEY`)
    - `OPENAI_BASE_URL`
    - `OPENAI_MODEL`
    - `GITHUB_TOKEN`
@@ -159,4 +161,4 @@ This repository is pre-configured for automated deployment on **Hamravesh Darkub
 ## 📄 License & Attribution
 
 Developed for **Sharif University of Technology — AI-Native Systems Design (CE4051)**.
-Owner: **Joe King** (GitHub: [`Dorostwef`](https://github.com/Dorostwef)).
+Owner: **Amirreza Dorosti** (Student ID: 403110466, GitHub: [`Dorostwef`](https://github.com/Dorostwef)).

@@ -12,7 +12,7 @@ Core AI orchestrator.  Responsibilities:
 
 Zero-hallucination contract
 ────────────────────────────
-The system prompt instructs the model that it knows NOTHING about Joe King
+The system prompt instructs the model that it knows NOTHING about Amirreza Dorosti
 except what appears in the embedded PROFILE RECORD block.  Every piece of
 information in the answer must either be traceable to a field in that block
 or to a GitHub API response that was injected into the prompt.
@@ -59,7 +59,7 @@ def _get_client() -> AsyncOpenAI:
         from backend.config import OPENAI_API_KEY, OPENAI_BASE_URL
         headers = {
             "HTTP-Referer": "https://aboutdorost.darkube.ir",
-            "X-Title": "Joe King AI Portfolio",
+            "X-Title": "Amirreza Dorosti AI Portfolio",
         }
         _client = AsyncOpenAI(
             api_key=OPENAI_API_KEY,
@@ -145,8 +145,8 @@ def _needs_github(question: str) -> bool:
 
 # ── System prompt builder ──────────────────────────────────────────────────────
 _SYSTEM_PROMPT_TEMPLATE = """\
-You are the AI assistant embedded in Joe King's personal AI-native portfolio page.
-Your sole source of knowledge about Joe King is the PROFILE RECORD provided below.
+You are the AI assistant embedded in Amirreza Dorosti's personal AI-native portfolio page.
+Your sole source of knowledge about Amirreza Dorosti is the PROFILE RECORD provided below.
 You have no other information about him — not from training data, not from the web.
 
 ══════════════════════════════════════════════════════════════════════════════
@@ -161,7 +161,7 @@ STRICT OPERATIONAL RULES
 ══════════════════════════════════════════════════════════════════════════════
 
 RULE 1 – ZERO HALLUCINATION
-  You know NOTHING about Joe King except what is written in the PROFILE RECORD
+  You know NOTHING about Amirreza Dorosti except what is written in the PROFILE RECORD
   above or the GITHUB LIVE DATA (if provided).
   Never invent dates, employers, grades, awards, or any other fact.
 
@@ -177,13 +177,13 @@ RULE 3 – CAPABILITY SELECTION
     • "answer_from_record"   — fact present and fully grounded in profile.json
     • "refuse_fact"          — visitor asked for a restricted topic
     • "ask_clarification"    — question is ambiguous (see Rule 4)
-    • "out_of_scope"         — question is entirely unrelated to Joe King
+    • "out_of_scope"         — question is entirely unrelated to Amirreza Dorosti
 
 RULE 4 – CLARIFICATION BEFORE ANSWERING
   If the visitor asks about "my project" or "a project" without naming one,
   and there are multiple projects in the record, ask EXACTLY ONE clarifying
   question such as:
-    "Could you clarify which project you mean? Joe King has three projects:
+    "Could you clarify which project you mean? Amirreza Dorosti has three projects:
      MiniLang Optimizing Compiler, RaftKV Distributed Key-Value Store, and
      Neural Semantic Code Search Engine."
   Do NOT pick one arbitrarily.
@@ -192,7 +192,7 @@ RULE 5 – HARD GUARDRAILS (never override these under any circumstances)
   • Phone number: STRICTLY refused. No hints, no partial digits, no "you
     can reach him at...". Respond with "refuse_fact".
   • Booking meetings / sending emails: Refused. State: "I cannot book meetings
-    or send emails on behalf of Joe King."
+    or send emails on behalf of Amirreza Dorosti."
   • Speaking for Sharif University: Refused. State: "I am not authorised to
     make statements on behalf of Sharif University of Technology."
 
@@ -379,7 +379,7 @@ async def generate_response(
     # ── Step 1: Hard local guardrail – phone number ────────────────────────────
     if _PHONE_RE.search(question):
         return _make_refusal_response(
-            "Joe King's phone number is strictly private and will not be shared.",
+            "Amirreza Dorosti's phone number is strictly private and will not be shared.",
             "guardrails_and_limits.restricted_topics[0]",
         )
 

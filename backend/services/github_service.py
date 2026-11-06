@@ -2,7 +2,7 @@
 github_service.py
 ──────────────────
 Async HTTP client that calls the GitHub REST API v3 to fetch live repository
-statistics and latest commit information for Joe King (GitHub: Dorostwef).
+statistics and latest commit information for Amirreza Dorosti (GitHub: Dorostwef).
 
 Design principles
 ─────────────────
@@ -179,7 +179,7 @@ def format_for_prompt(github_data: dict[str, Any]) -> str:
         ## GitHub Live Data: compiler (Dorostwef/compiler-opt)
         Stars: 12 | Forks: 3 | Primary Language: Rust | Open Issues: 1
         Last updated: 2026-10-28T14:22:00Z
-        Latest commit [a3f91c2]: "fix register allocation spill logic" by Joe King on 2026-10-27T09:15:00Z
+        Latest commit [a3f91c2]: "fix register allocation spill logic" by Amirreza Dorosti on 2026-10-27T09:15:00Z
     """
     if github_data.get("status") == "unavailable":
         return (

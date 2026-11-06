@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   app.js — Joe King AI-Native Portfolio
+   app.js — Amirreza Dorosti AI-Native Portfolio
    Frontend controller: Profile loading, Chat engine, Grounding Auditor (Idea 1)
    ═══════════════════════════════════════════════════════════════════════════ */
 

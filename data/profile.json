@@ -2,17 +2,18 @@
   "$schema": "./profile.schema.json",
   "meta": {
     "version": "1.0.0",
-    "last_updated": "2026-10-30",
-    "owner": "Joe King",
+    "last_updated": "2026-11-06",
+    "owner": "Amirreza Dorosti",
+    "student_number": "403110466",
     "visibility": "public"
   },
   "guardrails_and_limits": {
     "visibility": "public",
     "authority_boundaries": [
       "Cannot book meetings or schedule calendar appointments",
-      "Cannot send emails or dispatch messages on behalf of Joe King",
+      "Cannot send emails or dispatch messages on behalf of Amirreza Dorosti",
       "Cannot make official statements or speak on behalf of Sharif University of Technology",
-      "Cannot represent or commit to contractual agreements on behalf of Joe King"
+      "Cannot represent or commit to contractual agreements on behalf of Amirreza Dorosti"
     ],
     "restricted_topics": [
       "Phone number (strictly private, will not be shared under any circumstances)"
@@ -25,11 +26,12 @@
     ]
   },
   "personal_info": {
-    "name": "Joe King",
+    "name": "Amirreza Dorosti",
+    "student_number": "403110466",
     "role": "Computer Engineering Student",
     "institution": "Sharif University of Technology",
     "location": "Tehran, Iran",
-    "email": "joe.king@sharif.edu",
+    "email": "amirreza.dorosti@sharif.edu",
     "github_username": "Dorostwef",
     "phone_number": {
       "value": "+98-912-000-0000",

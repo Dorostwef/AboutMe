@@ -74,9 +74,9 @@ async def lifespan(app: FastAPI):
 
 # ── App ────────────────────────────────────────────────────────────────────────
 app = FastAPI(
-    title="AboutMe – Joe King's AI-Native Portfolio API",
+    title="AboutMe – Amirreza Dorosti's AI-Native Portfolio API",
     description=(
-        "Strict-grounding, zero-hallucination AI backend for Joe King's "
+        "Strict-grounding, zero-hallucination AI backend for Amirreza Dorosti's "
         "personal portfolio. All facts are sourced from profile.json or the "
         "GitHub REST API v3. Phone number and other private data are refused."
     ),
@@ -149,7 +149,7 @@ async def serve_index() -> FileResponse:
 @app.get(
     "/api/profile",
     response_model=PublicProfile,
-    summary="Retrieve Joe King's public profile",
+    summary="Retrieve Amirreza Dorosti's public profile",
     tags=["Profile"],
 )
 async def get_profile() -> PublicProfile:
@@ -172,7 +172,7 @@ async def get_profile() -> PublicProfile:
 @app.post(
     "/api/chat",
     response_model=ChatResponse,
-    summary="Send a question to Joe King's AI assistant",
+    summary="Send a question to Amirreza Dorosti's AI assistant",
     tags=["Chat"],
 )
 async def chat(request: ChatRequest) -> ChatResponse:

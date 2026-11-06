@@ -156,6 +156,7 @@ class PublicProfile(BaseModel):
     Safe to send to any browser without leaking private data.
     """
     name: str
+    student_number: Optional[str] = None
     role: str
     institution: str
     location: str

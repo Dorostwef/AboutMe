@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Dockerfile — Joe King AI-Native Portfolio
+# Dockerfile — Amirreza Dorosti AI-Native Portfolio
 # Single-stage Python 3.11 slim container.
 # Serves both the FastAPI backend and the static frontend on port 8000.
 # ─────────────────────────────────────────────────────────────────────────────
