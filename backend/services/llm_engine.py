@@ -43,7 +43,7 @@ try:
 except Exception:
     pass
 
-from backend.config import OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL
+from backend.config import API_KEY, MODEL, URL
 from backend.schemas import AuditSpan, ChatResponse, ExplainabilityTrace
 from backend.services.github_service import fetch_repo_data, format_for_prompt
 from backend.services.profile_loader import get_profile_json_for_prompt
@@ -56,14 +56,14 @@ _client: AsyncOpenAI | None = None
 def _get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
-        from backend.config import OPENAI_API_KEY, OPENAI_BASE_URL
+        from backend.config import API_KEY, URL
         headers = {
             "HTTP-Referer": "https://aboutdorost.darkube.ir",
             "X-Title": "Amirreza Dorosti AI Portfolio",
         }
         _client = AsyncOpenAI(
-            api_key=OPENAI_API_KEY,
-            base_url=OPENAI_BASE_URL,
+            api_key=API_KEY or "none",
+            base_url=URL,
             default_headers=headers,
         )
     return _client
@@ -272,7 +272,7 @@ async def _call_llm(
 
     client = _get_client()
     call_kwargs: dict[str, Any] = {
-        "model": OPENAI_MODEL,
+        "model": MODEL,
         "messages": messages,
         "temperature": 0.0,
         "max_tokens": 2048,

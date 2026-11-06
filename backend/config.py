@@ -23,31 +23,54 @@ for _proxy_var in ("all_proxy", "ALL_PROXY", "http_proxy", "HTTP_PROXY", "https_
         os.environ[_proxy_var] = "socks5://" + _val[len("socks://"):]
 
 
-# ── LLM ───────────────────────────────────────────────────────────────────────
-# Supports OPENROUTER_API_KEY, OPENAI_API_KEY, or GROQ_API_KEY
-OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
-OPENAI_API_KEY: str = (
-    OPENROUTER_API_KEY
+# ── LLM Configuration (Generic / Global) ───────────────────────────────────────
+# Primary global configuration variables: API_KEY, URL, MODEL
+# Designed to work with ANY OpenAI-compatible endpoint URL (OpenRouter, Groq, OpenAI, Ollama, custom proxies).
+
+API_KEY: str = (
+    os.getenv("API_KEY")
+    or os.getenv("OPENROUTER_API_KEY")
+    or os.getenv("GROQ_API_KEY")
     or os.getenv("OPENAI_API_KEY", "")
-    or os.getenv("GROQ_API_KEY", "")
 )
 
-# Determine default Base URL
-_default_base_url = "https://api.openai.com/v1"
-if OPENROUTER_API_KEY or OPENAI_API_KEY.startswith("sk-or-"):
-    _default_base_url = "https://openrouter.ai/api/v1"
-elif os.getenv("GROQ_API_KEY") or OPENAI_API_KEY.startswith("gsk_"):
-    _default_base_url = "https://api.groq.com/openai/v1"
+# Determine sensible default URL if not explicitly provided
+_default_url = "https://openrouter.ai/api/v1"
+if API_KEY.startswith("gsk_"):
+    _default_url = "https://api.groq.com/openai/v1"
+elif API_KEY.startswith("sk-or-"):
+    _default_url = "https://openrouter.ai/api/v1"
+elif API_KEY.startswith("sk-"):
+    _default_url = "https://api.openai.com/v1"
 
-OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL") or _default_base_url
+# URL accepts any link provided via environment variable
+URL: str = (
+    os.getenv("URL")
+    or os.getenv("BASE_URL")
+    or os.getenv("OPENAI_BASE_URL")
+    or _default_url
+)
 
-# Determine default Model
-if "openrouter.ai" in OPENAI_BASE_URL:
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "meta-llama/llama-3.3-70b-instruct")
-elif "groq.com" in OPENAI_BASE_URL:
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "openai/gpt-oss-20b")
-else:
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+# Determine default model based on the URL target if MODEL not explicitly set
+_default_model = "meta-llama/llama-3.3-70b-instruct"
+if "groq.com" in URL:
+    _default_model = "openai/gpt-oss-20b"
+elif "openai.com" in URL:
+    _default_model = "gpt-4o-mini"
+elif "openrouter.ai" in URL:
+    _default_model = "meta-llama/llama-3.3-70b-instruct"
+
+MODEL: str = (
+    os.getenv("MODEL")
+    or os.getenv("OPENAI_MODEL")
+    or _default_model
+)
+
+# Backward-compatibility aliases
+OPENAI_API_KEY: str = API_KEY
+OPENAI_BASE_URL: str = URL
+OPENAI_MODEL: str = MODEL
+OPENROUTER_API_KEY: str = API_KEY
 
 # ── GitHub ─────────────────────────────────────────────────────────────────────
 GITHUB_TOKEN: str | None = os.getenv("GITHUB_TOKEN")

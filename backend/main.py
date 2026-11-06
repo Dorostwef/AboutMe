@@ -29,7 +29,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from backend.config import HOST, OPENAI_BASE_URL, OPENAI_MODEL, PORT
+from backend.config import API_KEY, HOST, MODEL, PORT, URL
 from backend.schemas import ChatRequest, ChatResponse, PublicProfile
 from backend.services.llm_engine import generate_response
 from backend.services.profile_loader import get_public_profile_dict, reload_profile
@@ -60,11 +60,12 @@ async def lifespan(app: FastAPI):
         get_public_profile_dict()  # warm cache
         logger.info("Profile loaded successfully.")
         provider_name = (
-            "OpenRouter" if "openrouter.ai" in OPENAI_BASE_URL
-            else ("Groq" if "groq.com" in OPENAI_BASE_URL else "OpenAI")
+            "OpenRouter" if "openrouter.ai" in URL
+            else ("Groq" if "groq.com" in URL
+            else ("OpenAI" if "openai.com" in URL else "Custom Endpoint"))
         )
-        logger.info("Active LLM Provider: %s (%s)", provider_name, OPENAI_BASE_URL)
-        logger.info("Active LLM Model: %s", OPENAI_MODEL)
+        logger.info("Active LLM Provider: %s (%s)", provider_name, URL)
+        logger.info("Active LLM Model: %s", MODEL)
     except FileNotFoundError as exc:
         logger.error("FATAL: %s", exc)
         raise SystemExit(1) from exc
@@ -122,15 +123,17 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
 async def health_check() -> dict[str, Any]:
     """Returns 200 OK and active provider info when the server is running."""
     provider_name = (
-        "OpenRouter" if "openrouter.ai" in OPENAI_BASE_URL
-        else ("Groq" if "groq.com" in OPENAI_BASE_URL else "OpenAI")
+        "OpenRouter" if "openrouter.ai" in URL
+        else ("Groq" if "groq.com" in URL
+        else ("OpenAI" if "openai.com" in URL else "Custom Endpoint"))
     )
     return {
         "status": "healthy",
         "service": "AboutMe AI Backend",
         "provider": provider_name,
-        "base_url": OPENAI_BASE_URL,
-        "model": OPENAI_MODEL,
+        "url": URL,
+        "base_url": URL,
+        "model": MODEL,
     }
 
 

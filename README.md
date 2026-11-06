@@ -93,9 +93,9 @@ cp .env.example .env
 
 Edit `.env`:
 ```ini
-GROQ_API_KEY=gsk_your_groq_api_key_here
-OPENAI_BASE_URL=https://api.groq.com/openai/v1
-OPENAI_MODEL=openai/gpt-oss-20b
+API_KEY=sk-or-your_openrouter_or_groq_api_key
+URL=https://openrouter.ai/api/v1
+MODEL=meta-llama/llama-3.3-70b-instruct
 GITHUB_TOKEN=ghp_your_github_token_here
 PORT=8000
 ```
@@ -149,10 +149,10 @@ This repository is pre-configured for automated deployment on **Hamravesh Darkub
 1. Log in to [console.hamravesh.com](https://console.hamravesh.com).
 2. Create a new app under **Darkube** and select this GitHub repository (`Dorostwef/AboutMe`).
 3. Set the Environment Variables:
-   - `OPENROUTER_API_KEY` (or `GROQ_API_KEY`)
-   - `OPENAI_BASE_URL`
-   - `OPENAI_MODEL`
-   - `GITHUB_TOKEN`
+   - `API_KEY` (e.g., OpenRouter or Groq API key)
+   - `URL` (e.g., `https://openrouter.ai/api/v1` or `https://api.groq.com/openai/v1`)
+   - `MODEL` (e.g., `meta-llama/llama-3.3-70b-instruct`)
+   - `GITHUB_TOKEN` (optional but recommended)
    - `PORT=8000`
 4. Deploy the application and assign a public domain.
 
