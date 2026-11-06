@@ -44,16 +44,26 @@ elif API_KEY.startswith("sk-"):
     _default_url = "https://api.openai.com/v1"
 
 # URL accepts any link provided via environment variable
-URL: str = (
+_raw_url = (
     os.getenv("URL")
     or os.getenv("BASE_URL")
     or os.getenv("OPENAI_BASE_URL")
     or _default_url
-)
+).strip()
+
+# Strip /chat/completions if the user pasted the complete curl endpoint URL
+if _raw_url.endswith("/chat/completions/"):
+    _raw_url = _raw_url[:-len("/chat/completions/")]
+elif _raw_url.endswith("/chat/completions"):
+    _raw_url = _raw_url[:-len("/chat/completions")]
+
+URL: str = _raw_url.rstrip("/")
 
 # Determine default model based on the URL target if MODEL not explicitly set
 _default_model = "meta-llama/llama-3.3-70b-instruct"
-if "groq.com" in URL:
+if "cloudflare.com" in URL:
+    _default_model = "@cf/zai-org/glm-4.7-flash"
+elif "groq.com" in URL:
     _default_model = "openai/gpt-oss-20b"
 elif "openai.com" in URL:
     _default_model = "gpt-4o-mini"

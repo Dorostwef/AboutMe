@@ -57,14 +57,16 @@ def _get_client() -> AsyncOpenAI:
     global _client
     if _client is None:
         from backend.config import API_KEY, URL
-        headers = {
-            "HTTP-Referer": "https://aboutdorost.darkube.ir",
-            "X-Title": "Amirreza Dorosti AI Portfolio",
-        }
+        headers = {}
+        if "openrouter.ai" in URL:
+            headers = {
+                "HTTP-Referer": "https://aboutdorost.darkube.ir",
+                "X-Title": "Amirreza Dorosti AI Portfolio",
+            }
         _client = AsyncOpenAI(
             api_key=API_KEY or "none",
             base_url=URL,
-            default_headers=headers,
+            default_headers=headers if headers else None,
         )
     return _client
 

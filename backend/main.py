@@ -61,8 +61,9 @@ async def lifespan(app: FastAPI):
         logger.info("Profile loaded successfully.")
         provider_name = (
             "OpenRouter" if "openrouter.ai" in URL
+            else ("Cloudflare" if "cloudflare.com" in URL
             else ("Groq" if "groq.com" in URL
-            else ("OpenAI" if "openai.com" in URL else "Custom Endpoint"))
+            else ("OpenAI" if "openai.com" in URL else "Custom Endpoint")))
         )
         logger.info("Active LLM Provider: %s (%s)", provider_name, URL)
         logger.info("Active LLM Model: %s", MODEL)
@@ -124,8 +125,9 @@ async def health_check() -> dict[str, Any]:
     """Returns 200 OK and active provider info when the server is running."""
     provider_name = (
         "OpenRouter" if "openrouter.ai" in URL
+        else ("Cloudflare" if "cloudflare.com" in URL
         else ("Groq" if "groq.com" in URL
-        else ("OpenAI" if "openai.com" in URL else "Custom Endpoint"))
+        else ("OpenAI" if "openai.com" in URL else "Custom Endpoint")))
     )
     return {
         "status": "healthy",
