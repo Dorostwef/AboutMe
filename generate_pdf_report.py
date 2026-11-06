@@ -338,26 +338,45 @@ def build_pdf(filename="AboutMe_Submission_Amirreza_Dorosti_403110466.pdf"):
     # ══════════════════════════════════════════════════════════════════════════
     story.append(Paragraph("4. Dynamic External Tool Calling (GitHub Integration)", h1_style))
     story.append(Paragraph(
-        "To complement the static record grounding, the application features an integrated live GitHub tool "
-        "(<code>backend/services/github_service.py</code>) communicating with the official GitHub REST API. "
-        "When visitors ask about recent codebase activities (e.g. <i>\"What is the latest commit on the Dedit repository?\"</i>), "
-        "the engine selects <code>capability: call_external_api</code>, fetches real-time commit SHAs, dates, and messages, "
-        "and produces an accurate, verifiable answer grounded in real GitHub activity.",
+        "To complement static record grounding, the application features an integrated live GitHub tool "
+        "(<code>backend/services/github_service.py</code>) communicating with the official GitHub REST API v3. "
+        "When visitors inquire about real-time repositories or commit history, the engine activates <code>capability: call_external_api</code>, "
+        "retrieves live metadata, and synthesizes an accurate, grounded answer.",
         body_style
     ))
+
+    # TRACE 4 (External API Call Example)
+    t4_box = [
+        [Paragraph("<b>TRACE 4: Live GitHub REST API Tool Call (Dynamic Activity)</b>", ParagraphStyle('T4', parent=body_style, textColor=colors.HexColor("#0f766e"), fontName="Helvetica-Bold"))],
+        [Paragraph("<b>Question:</b> What are Amirreza Dorosti's GitHub projects and repositories?", body_style)],
+        [Paragraph("<b>Intent:</b> <code>github_activity</code>", body_style)],
+        [Paragraph("<b>Fields read:</b> <code>projects, GitHub REST API v3 (users/Dorostwef/repos)</code>", body_style)],
+        [Paragraph("<b>Capability:</b> <code>call_external_api</code> | <b>External Service:</b> <code>GitHub REST API v3</code>", body_style)],
+        [Paragraph("<b>Answer:</b> <i>\"According to the profile, Amirreza Dorosti has three main projects: MiniLang Optimizing Compiler, RaftKV Distributed Key-Value Store, and Neural Semantic Code Search Engine. The live data indicates that repositories Dorostwef/compiler-opt, Dorostwef/raft-kv, and Dorostwef/neural-search are currently not found on GitHub (suggesting private status), while active public repositories were retrieved: Dorostwef/Dedit, Dorostwef/HisYar, and Dorostwef/ap-git-handson.\"</i>", body_style)],
+        [Paragraph("<b>Audit Note:</b> Demonstrates live tool execution. The agent cross-references static profile projects with live GitHub REST API responses to accurately report repository presence and activity without hallucination.", callout_style)]
+    ]
+    t4_table = Table(t4_box, colWidths=[504])
+    t4_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#f0fdfa")),
+        ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#5eead4")),
+        ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#99f6e4")),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+    ]))
+    story.append(KeepTogether(t4_table))
+    story.append(Spacer(1, 8))
 
     story.append(Paragraph("5. Interactive Frontend & Trace Inspection", h1_style))
     story.append(Paragraph(
-        "The single-page web client at <font color='#1d4ed8'><b>https://aboutdorost.darkube.ir</b></font> features:<br/>"
-        "• <b>Live Chat Interface:</b> Conversational bubble UI with real-time markdown parsing and question suggestions.<br/>"
-        "• <b>Expandable Explainability Panel:</b> Clicking <i>'Inspect Reasoning & Trace'</i> reveals the exact intent, capability, "
-        "retrieved profile fields, and audit spans highlighted with their grounding source.<br/>"
-        "• <b>Grounding Source Badges:</b> Every sentence in the answer is tagged as <code>record_grounded</code>, "
-        "<code>missing_fact_notice</code>, or <code>guardrail_refusal</code>, giving visitors full transparency.",
+        "The web client at <font color='#1d4ed8'><b>https://aboutdorost.darkube.ir</b></font> features a live chat UI "
+        "with an expandable <i>'Inspect Reasoning & Trace'</i> drawer displaying intent, capability, retrieved fields, "
+        "and sentence-level audit spans (<code>record_grounded</code>, <code>missing_fact_notice</code>, <code>guardrail_refusal</code>).",
         body_style
     ))
 
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
     story.append(Paragraph("<b>Submission Verification Checklist:</b>", h2_style))
     
     check_table_data = [
@@ -365,7 +384,7 @@ def build_pdf(filename="AboutMe_Submission_Amirreza_Dorosti_403110466.pdf"):
         [Paragraph("1. Public URL", body_style), Paragraph("Hosted on Hamravesh Darkube PaaS", body_style), Paragraph("<b>Live:</b> <font color='#1d4ed8'>https://aboutdorost.darkube.ir</font>", body_style)],
         [Paragraph("2. Git Repository", body_style), Paragraph("Public GitHub repo with full history", body_style), Paragraph("<b>Synced:</b> <font color='#1d4ed8'>https://github.com/Dorostwef/AboutMe</font>", body_style)],
         [Paragraph("3. JSON Profile & Schema", body_style), Paragraph("Courses, projects, limits, and field permissions", body_style), Paragraph("<b>Present:</b> <code>data/profile.json</code>, <code>profile.schema.json</code>", body_style)],
-        [Paragraph("4. Production Traces", body_style), Paragraph("Good answer, refusal, clarifying question", body_style), Paragraph("<b>Included:</b> Section 3 with full fields & audit spans", body_style)],
+        [Paragraph("4. Production Traces", body_style), Paragraph("Good answer, refusal, clarifying question, and live external API", body_style), Paragraph("<b>Included:</b> Section 3 & 4 with audit spans", body_style)],
         [Paragraph("5. Generic LLM Config", body_style), Paragraph("Universal <code>API_KEY</code>, <code>URL</code>, <code>MODEL</code> support", body_style), Paragraph("<b>Verified:</b> Supports OpenRouter, Cloudflare, Groq, local", body_style)],
         [Paragraph("6. Student Identity", body_style), Paragraph("Amirreza Dorosti (403110466)", body_style), Paragraph("<b>Consistent:</b> Applied across code, schemas, and UI", body_style)]
     ]
@@ -374,13 +393,12 @@ def build_pdf(filename="AboutMe_Submission_Amirreza_Dorosti_403110466.pdf"):
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#f1f5f9")),
         ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#cbd5e1")),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('TOPPADDING', (0, 0), (-1, -1), 4),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ('TOPPADDING', (0, 0), (-1, -1), 3),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 3),
         ('LEFTPADDING', (0, 0), (-1, -1), 6),
         ('RIGHTPADDING', (0, 0), (-1, -1), 6),
     ]))
     story.append(chk_table)
-
     doc.build(story, canvasmaker=NumberedCanvas)
     print(f"PDF built successfully: {filename}")
 

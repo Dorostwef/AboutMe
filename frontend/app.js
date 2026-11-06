@@ -109,12 +109,26 @@ async function sendMessage(questionText) {
     const data = await res.json();        // ChatResponse: {answer, trace}
     lastTrace = data.trace;
 
+    // Defensively unwrap if answer ever contained raw JSON
+    let cleanAnswer = data.answer || '';
+    if (typeof cleanAnswer === 'string' && cleanAnswer.trim().startsWith('{')) {
+      try {
+        const parsed = JSON.parse(cleanAnswer);
+        if (parsed.answer) cleanAnswer = parsed.answer;
+      } catch (_) {
+        const match = cleanAnswer.match(/"answer"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+        if (match) {
+          cleanAnswer = match[1].replace(/\\"/g, '"').replace(/\\n/g, '\n');
+        }
+      }
+    }
+
     typingEl.remove();
-    appendMessage('assistant', data.answer, data.trace);
+    appendMessage('assistant', cleanAnswer, data.trace);
 
     // Update conversation history for multi-turn
     conversationHistory.push({ role: 'user',      content: question });
-    conversationHistory.push({ role: 'assistant', content: data.answer });
+    conversationHistory.push({ role: 'assistant', content: cleanAnswer });
     // Keep last 10 turns
     if (conversationHistory.length > 20) conversationHistory = conversationHistory.slice(-20);
 

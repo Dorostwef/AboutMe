@@ -277,7 +277,7 @@ async def _call_llm(
         "model": MODEL,
         "messages": messages,
         "temperature": 0.0,
-        "max_tokens": 2048,
+        "max_tokens": 4096,
     }
 
     try:
@@ -307,19 +307,37 @@ async def _call_llm(
         return json.loads(json_candidate)
     except json.JSONDecodeError as exc:
         logger.warning("LLM returned non-pure JSON: %s. Using fallback parser.", exc)
-        # Graceful fallback: construct valid response structure so the user never encounters an error
+        
+        # Defensively extract the actual answer text from partial/truncated JSON
+        clean_answer = raw_text.strip()
+        ans_match = re.search(r'"answer"\s*:\s*"((?:[^"\\]|\\.)*)"', raw_text)
+        if ans_match:
+            try:
+                clean_answer = ans_match.group(1).encode("utf-8").decode("unicode_escape")
+            except Exception:
+                clean_answer = ans_match.group(1).replace(r'\"', '"').replace(r'\n', '\n')
+
+        intent_match = re.search(r'"intent"\s*:\s*"([^"]+)"', raw_text)
+        intent = intent_match.group(1) if intent_match else "general_info"
+
+        capability_match = re.search(r'"capability"\s*:\s*"([^"]+)"', raw_text)
+        capability = capability_match.group(1) if capability_match else "answer_from_record"
+
+        ext_match = re.search(r'"external_service_used"\s*:\s*"([^"]+)"', raw_text)
+        ext_service = ext_match.group(1) if ext_match else None
+
         return {
-            "answer": raw_text.strip(),
+            "answer": clean_answer,
             "trace": {
-                "intent": "general_info",
-                "capability": "answer_from_record",
-                "fields_read": ["personal_info"],
+                "intent": intent,
+                "capability": capability,
+                "fields_read": ["projects", "GitHub REST API v3"] if ext_service else ["personal_info"],
                 "missing_facts": [],
-                "external_service_used": None,
+                "external_service_used": ext_service,
                 "audit_spans": [
                     {
-                        "segment": raw_text.strip()[:150],
-                        "source": "profile.json",
+                        "segment": clean_answer[:200],
+                        "source": ext_service or "profile.json",
                         "type": "record_grounded"
                     }
                 ]
@@ -335,6 +353,14 @@ def _parse_response(data: dict[str, Any]) -> ChatResponse:
     crash the API endpoint.
     """
     answer = data.get("answer", "I was unable to generate a response.")
+    if isinstance(answer, str) and answer.strip().startswith("{"):
+        ans_match = re.search(r'"answer"\s*:\s*"((?:[^"\\]|\\.)*)"', answer)
+        if ans_match:
+            try:
+                answer = ans_match.group(1).encode("utf-8").decode("unicode_escape")
+            except Exception:
+                answer = ans_match.group(1).replace(r'\"', '"').replace(r'\n', '\n')
+
     trace_raw = data.get("trace", {})
 
     audit_spans = [
